@@ -14,6 +14,8 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
@@ -24,7 +26,7 @@ import com.primetgi.org.crm.dao.CustomerDAOImpl;
 @EnableWebMvc
 @ComponentScan(basePackages = "com.primetgi.org.crm.controller")
 @EnableTransactionManagement
-public class CustomerConfigApp {
+public class CustomerConfigApp implements WebMvcConfigurer {
 
 	@Bean
 	public ViewResolver viewResolver() {
@@ -91,6 +93,13 @@ public class CustomerConfigApp {
 	@Bean
 	public CustomerDAO customerDAO() {
 		return new CustomerDAOImpl();
-
 	}
+	
+	//Add support for reading web resources: css, images, js etc
+	public void addResourceHandlers(ResourceHandlerRegistry registry) {
+		registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
+	}
+
+	
 }
+
