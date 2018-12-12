@@ -1,4 +1,4 @@
-package com.primetgi.org.testdb;
+package com.primetgi.org.crm.testdb;
 
 import java.io.IOException;
 import java.io.PrintWriter;

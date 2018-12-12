@@ -1,4 +1,4 @@
-package com.primetgi.org.config;
+package com.primetgi.org.crm.config;
 
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 

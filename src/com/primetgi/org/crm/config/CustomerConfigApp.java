@@ -1,4 +1,4 @@
-package com.primetgi.org.config;
+package com.primetgi.org.crm.config;
 
 import java.beans.PropertyVetoException;
 import java.util.Properties;
@@ -9,16 +9,20 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
+import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
+import com.primetgi.org.crm.dao.CustomerDAO;
+import com.primetgi.org.crm.dao.CustomerDAOImpl;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages = "com.primetgi.org.controller")
+@ComponentScan(basePackages = "com.primetgi.org.crm.controller")
 @EnableTransactionManagement
 public class CustomerConfigApp {
 
@@ -53,10 +57,10 @@ public class CustomerConfigApp {
 
 	// Step 2: Set up Hibernate Session Factory
 	@Bean
-	public LocalSessionFactoryBean localSessionFactoryBean() throws PropertyVetoException {
+	public LocalSessionFactoryBean sessionFactory() throws PropertyVetoException {
 		LocalSessionFactoryBean sessionFactoryBean = new LocalSessionFactoryBean();
 		sessionFactoryBean.setDataSource(comboPooledDataSource());
-		sessionFactoryBean.setPackagesToScan(new String[] { "com.primetgi.org.entity" });
+		sessionFactoryBean.setPackagesToScan(new String[] { "com.primetgi.org.crm.entity" });
 		sessionFactoryBean.setHibernateProperties(hibernateProperties());
 		return sessionFactoryBean;
 
@@ -71,11 +75,22 @@ public class CustomerConfigApp {
 	}
 
 	// Step 3: Set Up Hibernate Transactional Manager
-
+	
 	public HibernateTransactionManager hibernateTransactionManager() throws PropertyVetoException {
 		HibernateTransactionManager transactionManager = new HibernateTransactionManager();
-		transactionManager.setSessionFactory((SessionFactory) localSessionFactoryBean());
+		transactionManager.setSessionFactory((SessionFactory) sessionFactory());
 		return transactionManager;
 	}
 
+	@Bean
+	public PlatformTransactionManager txManager() {
+		JpaTransactionManager jpaTransactionManager = new JpaTransactionManager();
+		return jpaTransactionManager;
+	}
+
+	@Bean
+	public CustomerDAO customerDAO() {
+		return new CustomerDAOImpl();
+
+	}
 }
