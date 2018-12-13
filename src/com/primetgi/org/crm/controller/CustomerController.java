@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.primetgi.org.crm.dao.CustomerDAO;
 import com.primetgi.org.crm.entity.Customer;
@@ -46,7 +47,7 @@ public class CustomerController {
 
 		model.addAttribute("customer", theCustomer);
 
-		return "cutomer-form";
+		return "customer-form";
 	}
 
 	@PostMapping("/saveCustomer")
@@ -54,5 +55,19 @@ public class CustomerController {
 		// save customer using service class
 		customerService.saveCustomer(theCustomer);
 		return "redirect:/customer/list";
+	}
+
+	@GetMapping("/showFormForUpdate")
+	public String showFormForUpdate(@RequestParam("customerId") int theId, Model model) {
+
+		// get the customer from the service
+		Customer theCustomer = customerService.getCustomer(theId);
+		
+		// set customer as a model attribute to pre-populate the data
+		model.addAttribute("customer", theCustomer);
+
+		// send over to the form
+
+		return "customer-form";
 	}
 }
