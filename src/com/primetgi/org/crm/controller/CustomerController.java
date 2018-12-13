@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.primetgi.org.crm.dao.CustomerDAO;
@@ -18,11 +20,11 @@ public class CustomerController {
 
 	// need to inject the CustomerDAO
 	// @Autowired
-	// private CustomerDAO customerDAO;		--No longer needed as service layer is added
-	
-	//need to inject the customer service
+	// private CustomerDAO customerDAO; --No longer needed as service layer is added
+
+	// need to inject the customer service
 	@Autowired
-	private CustomerService customerService; 
+	private CustomerService customerService;
 
 	@GetMapping("/list")
 	public String listCustomer(Model model) {
@@ -36,4 +38,21 @@ public class CustomerController {
 		return "list-customer";
 	}
 
+	@GetMapping("/showFormForAdd")
+	public String showFormForAdd(Model model) {
+
+		// create model attribute to bind form data
+		Customer theCustomer = new Customer();
+
+		model.addAttribute("customer", theCustomer);
+
+		return "cutomer-form";
+	}
+
+	@PostMapping("/saveCustomer")
+	public String saveCustomer(@ModelAttribute("customer") Customer theCustomer) {
+		// save customer using service class
+		customerService.saveCustomer(theCustomer);
+		return "redirect:/customer/list";
+	}
 }
