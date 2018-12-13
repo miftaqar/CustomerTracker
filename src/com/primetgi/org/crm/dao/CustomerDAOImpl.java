@@ -20,7 +20,8 @@ public class CustomerDAOImpl implements CustomerDAO {
 	private SessionFactory sessionFactory;
 
 	@Override
-	@Transactional()
+	// @Transactional() --No longer needed as @Transactional is defined in
+	// serviceImpl layer
 	public List<Customer> getCustomers() {
 
 		// get the current Hibernate Session

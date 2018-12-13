@@ -21,6 +21,8 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 import com.primetgi.org.crm.dao.CustomerDAO;
 import com.primetgi.org.crm.dao.CustomerDAOImpl;
+import com.primetgi.org.crm.service.CustomerService;
+import com.primetgi.org.crm.service.CustomerServiceImpl;
 
 @Configuration
 @EnableWebMvc
@@ -77,7 +79,7 @@ public class CustomerConfigApp implements WebMvcConfigurer {
 	}
 
 	// Step 3: Set Up Hibernate Transactional Manager
-	
+
 	public HibernateTransactionManager hibernateTransactionManager() throws PropertyVetoException {
 		HibernateTransactionManager transactionManager = new HibernateTransactionManager();
 		transactionManager.setSessionFactory((SessionFactory) sessionFactory());
@@ -90,16 +92,22 @@ public class CustomerConfigApp implements WebMvcConfigurer {
 		return jpaTransactionManager;
 	}
 
-	@Bean
-	public CustomerDAO customerDAO() {
-		return new CustomerDAOImpl();
-	}
-	
-	//Add support for reading web resources: css, images, js etc
+	// Add support for reading web resources: css, images, js etc
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
 	}
 
-	
-}
+	/*
+	 * Bean Classes
+	 */
+	@Bean
+	public CustomerDAO customerDAO() {
+		return new CustomerDAOImpl();
+	}
 
+	@Bean
+	public CustomerService customerService() {
+		return new CustomerServiceImpl();
+	}
+
+}
