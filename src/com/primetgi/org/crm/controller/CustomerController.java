@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.primetgi.org.crm.dao.CustomerDAO;
 import com.primetgi.org.crm.entity.Customer;
 import com.primetgi.org.crm.service.CustomerService;
-import com.sun.javafx.sg.prism.NGShape.Mode;
 
 @Controller
 @RequestMapping("/customer")
@@ -80,5 +79,17 @@ public class CustomerController {
 		
 		return "redirect:/customer/list";
 		
+	}
+	
+	@PostMapping("/searchCustomer")
+	public String searchCustomer(@RequestParam("searchCustomer") String searchCustomer, Model model) {
+	
+		//search customer from the service
+		List<Customer> customers = customerService.searchCustomer(searchCustomer);
+		
+		//add model to customer
+		model.addAttribute("customers", customers);
+		
+		return "list-customer";
 	}
 }

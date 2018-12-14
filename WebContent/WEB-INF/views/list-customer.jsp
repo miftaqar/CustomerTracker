@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -22,6 +23,14 @@
 			<input type="button" value="Add Customer"
 				onclick="window.location.href='showFormForAdd'; return false;"
 				class="add-button" />
+
+			<!-- Add Search Functionality -->
+			<form:form action="searchCustomer" modelAttribute="customer"
+				method="POST">
+				Serach Customer <input type="text" name="searchCustomer">
+				<input type="submit" value="Serach" class="add-button">
+			</form:form>
+
 
 			<!-- add out html table here -->
 
