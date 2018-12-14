@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.primetgi.org.crm.dao.CustomerDAO;
 import com.primetgi.org.crm.entity.Customer;
 import com.primetgi.org.crm.service.CustomerService;
+import com.sun.javafx.sg.prism.NGShape.Mode;
 
 @Controller
 @RequestMapping("/customer")
@@ -69,5 +70,15 @@ public class CustomerController {
 		// send over to the form
 
 		return "customer-form";
+	}
+	
+	@GetMapping("/delete")
+	public String deleteCustomer(@RequestParam("customerId") int theId, Model model) {
+		
+		//delete the customer from the service
+		customerService.deleteCustomer(theId);
+		
+		return "redirect:/customer/list";
+		
 	}
 }

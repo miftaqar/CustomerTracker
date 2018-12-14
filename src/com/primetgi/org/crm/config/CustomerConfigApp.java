@@ -4,9 +4,12 @@ import java.beans.PropertyVetoException;
 import java.util.Properties;
 
 import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.orm.jpa.JpaTransactionManager;
@@ -30,6 +33,20 @@ import com.primetgi.org.crm.service.CustomerServiceImpl;
 @EnableTransactionManagement
 public class CustomerConfigApp implements WebMvcConfigurer {
 
+	/*
+	@Value("${db.driverClass}")
+	private String dbDriver;
+	
+	@Value("${db.JdbcUrl}")
+	private String dbURL;
+	
+	@Value("${db.user}")
+	private String dbUser;
+	
+	@Value("${db.password}")
+	private String dbPassword;
+	*/
+	
 	@Bean
 	public ViewResolver viewResolver() {
 		InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
@@ -95,6 +112,17 @@ public class CustomerConfigApp implements WebMvcConfigurer {
 	// Add support for reading web resources: css, images, js etc
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
+	}
+
+	// load the custom message resources
+	@Bean
+	public MessageSource messageSource() {
+		ResourceBundleMessageSource resourceBundleMessageSource = new ResourceBundleMessageSource();
+		resourceBundleMessageSource.setBasenames("resources/customerTracker");
+		resourceBundleMessageSource.setDefaultEncoding("UTF-8");
+		resourceBundleMessageSource.setUseCodeAsDefaultMessage(true);
+		return resourceBundleMessageSource;
+
 	}
 
 	/*
